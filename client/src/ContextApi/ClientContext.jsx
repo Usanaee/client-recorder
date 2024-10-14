@@ -18,23 +18,34 @@ export const ClientProvider = ({ children }) => {
       try {
         setLoading(true);
         const response = await ApiManager.getAllClients();
-        setClients(response.data);
-        setLoading(false);
+        // Ensure response.data is an array before setting state
+        if (Array.isArray(response.data)) {
+          setClients(response.data);
+        } else {
+          setClients([]); // Fallback to empty array if response is not valid
+        }
       } catch (error) {
         console.log("Error during fetching data", error);
+      } finally {
+        setLoading(false); // Move to finally to ensure it runs regardless of success/error
       }
     };
     fetchData();
   }, []);
 
-  console.log("Client provider", clients)
+  console.log("Client provider", clients);
 
   // Filter clients based on search query
-  const filteredClients = clients.filter((client) =>
-    client.businessType?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredClients = clients.filter((client) => {
+    return (
+      client &&
+      client.businessType &&
+      client.businessType.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
-  console.log(filteredClients)
+  console.log("Filtered clients", filteredClients);
+
   const deleteClient = async (userId) => {
     try {
       const response = await ApiManager.deleteClient(userId);
@@ -65,7 +76,7 @@ export const ClientProvider = ({ children }) => {
 
   return (
     <ClientContext.Provider
-      value={{ clients, setClients, filteredClients, setSearchQuery, loading,deleteClient }}
+      value={{ clients, setClients, filteredClients, setSearchQuery, loading, deleteClient }}
     >
       {children}
     </ClientContext.Provider>
