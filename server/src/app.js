@@ -26,4 +26,8 @@ import adminRoute from "./routes/admin.routes.js";
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/admin", adminRoute);
 
+app.get("/", (req, res) => {
+  res.send("<h1>Welcome!</h1>");
+});
+
 export { app };
