@@ -27,11 +27,14 @@ export const ClientProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  console.log("Client provider", clients)
+
   // Filter clients based on search query
   const filteredClients = clients.filter((client) =>
     client.businessType?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  console.log(filteredClients)
   const deleteClient = async (userId) => {
     try {
       const response = await ApiManager.deleteClient(userId);
