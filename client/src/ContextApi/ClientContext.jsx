@@ -29,7 +29,7 @@ export const ClientProvider = ({ children }) => {
 
   // Filter clients based on search query
   const filteredClients = clients.filter((client) =>
-    client.businessType.toLowerCase().includes(searchQuery.toLowerCase())
+    client.businessType?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const deleteClient = async (userId) => {
