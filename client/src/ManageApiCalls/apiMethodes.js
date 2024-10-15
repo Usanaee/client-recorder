@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://client-recorder-frontend.vercel.app/api/v1/";
+const BASE_URL = "https://client-recorder-backend.vercel.app/api/v1/";
 
 class ApiMethods {
   static apiRequest(method, url, body = {}) {
