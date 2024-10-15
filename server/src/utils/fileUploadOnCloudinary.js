@@ -1,9 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import { Readable } from 'stream'; // Import Readable from stream
 import dotenv from "dotenv";
-import { Readable } from 'stream';
 
-dotenv.config({ path: "./.env" }); // Load environment variables from.env file
+dotenv.config({ path: "./.env" }); // Load environment variables from .env file
 
 // Configuration
 cloudinary.config({
@@ -17,25 +16,31 @@ const fileUploadOnCloudinary = async (fileBuffer) => {
   try {
     if (!fileBuffer) return null;
 
-    const uploadResult = await cloudinary.uploader.upload_stream(
-      { resource_type: "auto" },
-      (error, result) => {
-        if (error) {
-          console.error("Error uploading file to Cloudinary:", error);
-          return null;
-        }
-        return result;
-      }
-    );
+    // Create a readable stream from the file buffer
+    const readableStream = Readable.from(fileBuffer);
 
-    // Create a readable stream from buffer and pipe it to Cloudinary
-    const readableStream = require('stream').Readable.from(fileBuffer);
-    readableStream.pipe(uploadResult);
+    // Upload the file to Cloudinary using the stream
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { resource_type: "auto" },
+        (error, result) => {
+          if (error) {
+            console.error("Error uploading file to Cloudinary:", error);
+            reject(null);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+      
+      // Pipe the readable stream to Cloudinary's upload stream
+      readableStream.pipe(stream);
+    });
+
   } catch (error) {
     console.log("Error uploading file to Cloudinary:", error);
     return null;
   }
 };
-
 
 export { fileUploadOnCloudinary };
