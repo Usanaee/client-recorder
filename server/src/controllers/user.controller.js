@@ -68,6 +68,10 @@ const getAllUser = asyncHandler(async (req, res) => {
     .json(new apiResponse(200, users, "All Users From database"));
 });
 
+const showUser = asyncHandler(async (req,res)=>{
+  const user  = User.findOne({"email" : "saim@gmail.com"});
+  return user;
+})
 const updateUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   const { name, email, businessType, status } = req.body;

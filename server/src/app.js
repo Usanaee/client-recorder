@@ -1,10 +1,13 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { User } from "./models/user.model.js";
+
+
 const app = express();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN, // allow requests from this origin
+    origin: "https://client-recorder-frontend.vercel.app", // allow requests from this origin
     credentials: true, // allow sending cookies
   })
 );
@@ -26,8 +29,21 @@ import adminRoute from "./routes/admin.routes.js";
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/admin", adminRoute);
 
-app.get("/", (req, res) => {
-  res.send("<h1>Welcome!</h1>");
+app.get("/", async (req, res) => {
+  let user;
+  try {
+     
+    user = await User.findOne({email : "saim@gmail.com"})
+    
+  } catch (error) {
+    console.log(error)
+  }
+
+  res.send(
+    
+    `<h1>Welcome!${user}</h1>`
+  
+  );
 });
 
 export { app };
