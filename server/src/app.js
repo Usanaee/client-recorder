@@ -30,7 +30,14 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/admin", adminRoute);
 
 app.get("/", (req, res) => {
-  const user = await User.findOne({email : "saim@gmail.com"})
+  let user;
+  try {
+     
+    user = await User.findOne({email : "saim@gmail.com"})
+    
+  } catch (error) {
+    console.log(error)
+  }
 
   res.send(
     
