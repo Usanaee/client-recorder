@@ -29,7 +29,7 @@ import adminRoute from "./routes/admin.routes.js";
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/admin", adminRoute);
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   let user;
   try {
      
