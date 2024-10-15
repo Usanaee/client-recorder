@@ -7,7 +7,7 @@ import { User } from "./models/user.model.js";
 const app = express();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN, // allow requests from this origin
+    origin: "*", // allow requests from this origin
     credentials: true, // allow sending cookies
   })
 );
