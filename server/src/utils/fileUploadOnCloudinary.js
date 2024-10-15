@@ -12,21 +12,29 @@ cloudinary.config({
 });
 
 // Upload an image
-const fileUploadOnCloudinary = async (localFilePath) => {
+const fileUploadOnCloudinary = async (fileBuffer) => {
   try {
-    if (!localFilePath) return null;
-    // Upload the file on the cloudinary
-    const uploadResult = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto",
-    });
+    if (!fileBuffer) return null;
 
-    fs.unlinkSync(localFilePath); // Delete the local temporary saved file as file uploaed failed
-    return uploadResult;
+    const uploadResult = await cloudinary.uploader.upload_stream(
+      { resource_type: "auto" },
+      (error, result) => {
+        if (error) {
+          console.error("Error uploading file to Cloudinary:", error);
+          return null;
+        }
+        return result;
+      }
+    );
+
+    // Create a readable stream from buffer and pipe it to Cloudinary
+    const readableStream = require('stream').Readable.from(fileBuffer);
+    readableStream.pipe(uploadResult);
   } catch (error) {
-    fs.unlinkSync(localFilePath); // Delete the local temporary saved file as file uploaed failed
     console.log("Error uploading file to Cloudinary:", error);
     return null;
   }
 };
+
 
 export { fileUploadOnCloudinary };

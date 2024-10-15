@@ -26,12 +26,12 @@ const generateAccessAndRefreshToken = async (userId) => {
 };
 
 const adminRegister = asyncHandler(async (req, res) => {
-  console.log("adminregister")
+  console.log("adminregister");
+
   const { name, email, password } = req.body;
-  if (
-    [name, email, password].some((field) => field?.trim() === "")
-  ) {
-    throw new apiError(400,"All fields are required");
+
+  if ([name, email, password].some((field) => field?.trim() === "")) {
+    throw new apiError(400, "All fields are required");
   }
 
   const userExisted = await Admin.findOne({
@@ -41,12 +41,13 @@ const adminRegister = asyncHandler(async (req, res) => {
     throw new apiError(409, "Email or Password already exists");
   }
 
-  const avatarLocalPath = req.file?.path;
-  if (!avatarLocalPath) {
+  // Access the uploaded file buffer
+  const avatarBuffer = req.file?.buffer;
+  if (!avatarBuffer) {
     throw new apiError(400, "Avatar is required");
   }
 
-  const avatar = await fileUploadOnCloudinary(avatarLocalPath);
+  const avatar = await fileUploadOnCloudinary(avatarBuffer); // Upload buffer to Cloudinary
 
   if (!avatar) {
     throw new apiError(400, "Avatar upload failed");
@@ -58,17 +59,14 @@ const adminRegister = asyncHandler(async (req, res) => {
     email,
     password,
   });
-  const createdUser = await Admin.findById(user._id).select(
-    "-password -refreshToken"
-  );
+
+  const createdUser = await Admin.findById(user._id).select("-password -refreshToken");
 
   if (!createdUser) {
     throw new apiError(500, "Something went wrong while registering the user");
   }
 
-  return res
-    .status(201)
-    .json(new apiResponse(200, "User registered successfully", createdUser));
+  return res.status(201).json(new apiResponse(200, "User registered successfully", createdUser));
 });
 
 const adminlogin = asyncHandler(async (req, res) => {

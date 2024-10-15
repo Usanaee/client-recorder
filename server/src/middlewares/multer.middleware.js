@@ -1,15 +1,8 @@
 import multer from "multer";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/temp");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+const storage = multer.memoryStorage(); // Store files in memory as buffer
 
 export const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  storage, // Use memoryStorage instead of diskStorage
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
 });
