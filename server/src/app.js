@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { User } from "./models/user.model.js";
+
+
 const app = express();
 app.use(
   cors({
@@ -27,7 +30,13 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/admin", adminRoute);
 
 app.get("/", (req, res) => {
-  res.send("<h1>Welcome!</h1>");
+  const user = await User.findOne({email : "saim@gmail.com"})
+
+  res.send(
+    
+    `<h1>Welcome!${user}</h1>`
+  
+  );
 });
 
 export { app };
