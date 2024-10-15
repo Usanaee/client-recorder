@@ -26,7 +26,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 };
 
 const adminRegister = asyncHandler(async (req, res) => {
-  console.log("adminregister");
+  console.log("Uploaded file:", req.file);
 
   const { name, email, password } = req.body;
 
