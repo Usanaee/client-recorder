@@ -7,7 +7,7 @@ const adminRoute = Router();
 
 adminRoute.route("/register-admin").post(upload.single("avatar"), adminRegister);
 
-adminRoute.route("/login-admin").get(upload.none(), adminlogin);
+adminRoute.route("/login-admin").post(upload.none(), adminlogin);
 adminRoute.route("/get-single-admin").post(verifyJWT,getSingleAdmin);
 
 //Secured routes
