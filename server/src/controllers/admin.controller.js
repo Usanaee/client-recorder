@@ -161,13 +161,15 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 });
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
-  const avatarLocalPath = req.file?.path;
-
-  if (!avatarLocalPath) {
+ 
+  // Access the uploaded file buffer
+  const avatarBuffer = req.file?.buffer;
+  if (!avatarBuffer) {
     throw new apiError(400, "Avatar is required");
   }
 
-  const avatar = await fileUploadOnCloudinary(avatarLocalPath);
+  const avatar = await fileUploadOnCloudinary(avatarBuffer); // Upload buffer to Cloudinary
+
 
   if (!avatar.url) {
     throw new apiError(400, "Error While uploading avatar to cloudinary");

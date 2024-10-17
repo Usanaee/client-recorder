@@ -17,9 +17,14 @@ const addUser = asyncHandler(async (req, res) => {
       400
     );
   }
-  const localAvatarPath = req.file?.path;
-  const avatarUploadOnCloudinary =
-    await fileUploadOnCloudinary(localAvatarPath);
+  
+  // Access the uploaded file buffer
+  const avatarBuffer = req.file?.buffer;
+  if (!avatarBuffer) {
+    throw new apiError(400, "Avatar is required");
+  }
+
+  const avatarUploadOnCloudinary = await fileUploadOnCloudinary(avatarBuffer); // Upload buffer to Cloudinary
   
   const user = await User.create({
     name,
