@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import ApiManager from "../ManageApiCalls/apiManager";
+import toast from "react-hot-toast";
 
 // Create the context
 const ClientContext = createContext();
