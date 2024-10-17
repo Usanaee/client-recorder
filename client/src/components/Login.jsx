@@ -28,6 +28,7 @@ function Login() {
 
     try {
       const response = await ApiManager.login(formData); // Send formData instead of object
+      console.log(response.data)
       const { accessToken } = response.data; // Extract access token from response
       localStorage.setItem("accessToken", accessToken); // Store token in local storage
 
