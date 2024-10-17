@@ -103,7 +103,7 @@ const adminlogin = asyncHandler(async (req, res) => {
   );
 
   const option = {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
   };
 
