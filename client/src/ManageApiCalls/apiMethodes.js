@@ -7,19 +7,24 @@ class ApiMethods {
     url = BASE_URL + url;
     const token = localStorage.getItem("accessToken");
 
-    const headers = {
-      "Content-Type": "multipart/form-data",
-      // "Accept": "application/json",
-      // "Content-Type": "application/json"
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
+    // const headers = {
+    //   "Content-Type": "multipart/form-data",
+    //   // "Accept": "application/json",
+    //   // "Content-Type": "application/json"
+    //   ...(token && { Authorization: `Bearer ${token}` }),
+    // },
 
     return new Promise((resolve, reject) => {
       axios({
         method,
         url,
         data: body,
-        headers: headers,
+        headers:  {
+          "Content-Type": "multipart/form-data",
+          // "Accept": "application/json",
+          // "Content-Type": "application/json"
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
         withCredentials: true, 
       })
         .then((response) => {
