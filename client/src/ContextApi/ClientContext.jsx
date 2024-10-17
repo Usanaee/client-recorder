@@ -34,7 +34,6 @@ export const ClientProvider = ({ children }) => {
     fetchData();
   }, []);
 
-  console.log("Client provider", clients);
 
   // Filter clients based on search query
   const filteredClients = clients.filter((client) => {
@@ -45,7 +44,6 @@ export const ClientProvider = ({ children }) => {
     );
   });
 
-  console.log("Filtered clients", filteredClients);
 
   const deleteClient = async (userId) => {
     try {
