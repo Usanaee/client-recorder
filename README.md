@@ -42,7 +42,7 @@ cd ../client
 npm install
 ```
 
-2. Set up environment variables:
+3. Set up environment variables:
 - Create a .env file in the backend directory.
 - Add the following variables:
 ```bash
